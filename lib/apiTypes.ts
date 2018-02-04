@@ -2,6 +2,21 @@ export interface DepthRequest {
   pair: string;
 }
 
+export interface TickerRequest {
+  pair: string;
+}
+
+export interface TransactionsRequest {
+  pair: string;
+  date?: string;
+}
+
+export interface CandlestickRequest {
+  pair: string;
+  candleType: string;
+  date: string;
+}
+
 export interface SendOrderRequest {
   pair: string;
   amount: number;
@@ -36,6 +51,44 @@ export interface DepthResponse {
   asks: string[][];
   bids: string[][];
   timestamp: number;
+}
+
+export interface TickerResponse {
+  sell: string;
+  buy: string;
+  high: string;
+  low: string;
+  last: string;
+  vol: string;
+  timestamp: number;
+}
+
+export interface TransactionsResponse {
+  transactions: {
+    transaction_id: number;
+    side: string;
+    price: string;
+    amount: string;
+    executed_at: number;
+  }[];
+}
+
+export interface CandlestickResponse {
+  candlestick: {
+    type: string;
+    ohlcv: string[][];
+  }[];
+}
+
+export interface AssetsResponse {
+  assets: {
+    asset: string;
+    amount_precision: number;
+    onhand_amount: string;
+    locked_amount: string;
+    free_amount: string;
+    withdrawal_fee: string;
+  }[];
 }
 
 export interface SendOrderResponse {

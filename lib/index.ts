@@ -9,27 +9,60 @@ import {
   CancelOrderRequest,
   ErrorResponse,
   SendOrderResponse,
-  SuccessResponse
+  SuccessResponse,
+  TickerResponse,
+  TickerRequest,
+  TransactionsRequest,
+  TransactionsResponse,
+  CandlestickRequest,
+  CandlestickResponse,
+  AssetsResponse
 } from './apiTypes';
 import * as util from './util';
 import * as crypto from 'crypto';
 import { errorMap } from './errorMap';
 import * as querystring from 'querystring';
+import { EventEmitter } from 'events';
+import * as _ from 'lodash';
 
-export default class Api {
+export default class Api extends EventEmitter {
   private readonly publicApiBaseUrl = 'https://public.bitbank.cc';
   private readonly privateApiBaseUrl = 'https://api.bitbank.cc';
   private readonly publicApiAxios: AxiosInstance;
   private readonly privateApiAxios: AxiosInstance;
 
   constructor(private readonly key: string, private readonly secret: string, private readonly timeout: number = 5000) {
+    super();
     this.publicApiAxios = axios.create({ baseURL: this.publicApiBaseUrl, timeout: this.timeout });
     this.privateApiAxios = axios.create({ baseURL: this.privateApiBaseUrl, timeout: this.timeout });
+  }
+
+  async getTicker(request: TickerRequest): Promise<TickerResponse> {
+    const path = `/${request.pair}/ticker`;
+    return await this.getPublic<TickerResponse>(path);
   }
 
   async getDepth(request: DepthRequest): Promise<DepthResponse> {
     const path = `/${request.pair}/depth`;
     return await this.getPublic<DepthResponse>(path);
+  }
+
+  async getTransactions(request: TransactionsRequest): Promise<TransactionsResponse> {
+    let path = `/${request.pair}/transactions`;
+    if (request.date !== undefined) {
+      path += `/${request.date}`;
+    }
+    return await this.getPublic<TransactionsResponse>(path);
+  }
+
+  async getCandlestick(request: CandlestickRequest): Promise<CandlestickResponse> {
+    const path = `/${request.pair}/candlestick/${request.candleType}/${request.date}`;
+    return await this.getPublic<CandlestickResponse>(path);
+  }
+
+  async getAssets(): Promise<AssetsResponse> {
+    const path = `/v1/user/assets`;
+    return await this.get<{}, AssetsResponse>(path, {});
   }
 
   async sendOrder(request: SendOrderRequest): Promise<SendOrderResponse> {
@@ -47,20 +80,33 @@ export default class Api {
     return await this.post<CancelOrderRequest, CancelOrderResponse>(path, request);
   }
 
-  private async post<Req, Res>(path: string, request: Req): Promise<Res> {
-    const axiosConfig = this.createPostConfig(path, request);
+  private async privateApiCall<Req, Res>(method: 'GET' | 'POST', path: string, request: Req): Promise<Res> {
+    let axiosConfig: AxiosRequestConfig;
+    switch (method) {
+      case 'GET':
+        axiosConfig = this.createGetConfig(path, request);
+        break;
+      case 'POST':
+        axiosConfig = this.createPostConfig(path, request);
+        break;
+      default:
+        throw new Error(`Unknown method ${method}.`);
+    }
+    const requestSummary = { url: `${this.privateApiAxios.defaults.baseURL}${axiosConfig.url}`, method, headers: axiosConfig };
+    this.emit('request', requestSummary);
     const axiosResponse = await this.privateApiAxios.request<SuccessResponse<Res> | ErrorResponse>(axiosConfig);
     const response = axiosResponse.data;
+    this.emit('response', response, requestSummary);
     this.checkError(response);
     return response.data as Res;
   }
 
+  private async post<Req, Res>(path: string, request: Req): Promise<Res> {
+    return await this.privateApiCall<Req, Res>('POST', path, request);
+  }
+
   private async get<Req, Res>(path: string, request: Req): Promise<Res> {
-    const axiosConfig = this.createGetConfig(path, request);
-    const axiosResponse = await this.privateApiAxios.request<SuccessResponse<Res> | ErrorResponse>(axiosConfig);
-    const response = axiosResponse.data;
-    this.checkError(response);
-    return response.data as Res;
+    return await this.privateApiCall<Req, Res>('GET', path, request);
   }
 
   private async getPublic<Res>(path: string) {
@@ -100,7 +146,7 @@ export default class Api {
   private createGetConfig(path: string, request: any): AxiosRequestConfig {
     const nonce = util.nonce();
     const qs = querystring.stringify(request);
-    const pathWithQs = `${path}?${qs}`;
+    const pathWithQs = _.isEmpty(qs) ? path : `${path}?${qs}`;
     const payload = new Buffer(nonce + pathWithQs);
     const signature = crypto
       .createHmac('sha256', this.secret)
