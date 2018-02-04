@@ -133,3 +133,100 @@ export const assetsRes = {
     ]
   }
 };
+
+export const depthRes = {
+  success: 1,
+  data: {
+    asks: [
+      ['942771', '0.0530'],
+      ['943998', '0.1651'],
+      ['943999', '0.0500']
+    ],
+    bids: [
+      ['940687', '0.0003'],
+      ['940643', '0.0180'],
+      ['940642', '0.0150']
+    ],
+    timestamp: 1517741645173
+  }
+};
+
+export const tickerRes = {
+  "success": 1,
+  "data": {
+    "sell": "947696",
+    "buy": "944953",
+    "high": "1025699",
+    "low": "922039",
+    "last": "946005",
+    "vol": "863.1516",
+    "timestamp": 1517742351610
+  }
+}; 
+
+export const transactionsRes = {
+  "success": 1,
+  "data": {
+    "transactions": [
+      {
+        "transaction_id": 3296317,
+        "side": "buy",
+        "price": "946378",
+        "amount": "0.0001",
+        "executed_at": 1517742406923
+      },
+      {
+        "transaction_id": 3296316,
+        "side": "sell",
+        "price": "945393",
+        "amount": "0.0010",
+        "executed_at": 1517742402964
+      },
+      {
+        "transaction_id": 3296315,
+        "side": "buy",
+        "price": "947525",
+        "amount": "0.0072",
+        "executed_at": 1517742397925
+      }
+    ]
+  }
+}
+
+export const candleRes = {
+  "success": 1,
+  "data": {
+    "candlestick": [
+      {
+        "type": "1hour",
+        "ohlcv": [
+          [
+            "1710289",
+            "1710294",
+            "1665961",
+            "1673659",
+            "9.4666",
+            1514764800000
+          ],
+          [
+            "1673659",
+            "1677579",
+            "1649888",
+            "1650000",
+            "9.6489",
+            1514768400000
+          ],
+          [
+            "1651109",
+            "1658000",
+            "1636542",
+            "1650021",
+            "5.0995",
+            1514772000000
+          ]
+        ]
+      }
+    ],
+    "timestamp": 1514851199932
+  }
+}

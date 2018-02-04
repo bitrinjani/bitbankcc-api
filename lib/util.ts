@@ -10,3 +10,7 @@ export const nonce: () => string = (function() {
     return prev.toString();
   };
 })();
+
+export function delay(time: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, time));
+}

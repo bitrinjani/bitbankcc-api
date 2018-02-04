@@ -37,7 +37,10 @@ import * as querystring from 'querystring';
 import { EventEmitter } from 'events';
 import * as _ from 'lodash';
 
-export default class Api extends EventEmitter {
+// to avoid a known issue with axios + nock.  https://github.com/axios/axios/issues/305
+axios.defaults.adapter = require('axios/lib/adapters/http');
+
+export default class BitbankCcApi extends EventEmitter {
   private readonly publicApiBaseUrl = 'https://public.bitbank.cc';
   private readonly privateApiBaseUrl = 'https://api.bitbank.cc';
   private readonly publicApiAxios: AxiosInstance;
@@ -135,10 +138,10 @@ export default class Api extends EventEmitter {
         throw new Error(`Unknown method ${method}.`);
     }
     const requestSummary = { url: `${this.privateApiAxios.defaults.baseURL}${axiosConfig.url}`, method, headers: axiosConfig };
-    this.emit('request', requestSummary);
+    this.emit('private_request', requestSummary);
     const axiosResponse = await this.privateApiAxios.request<SuccessResponse<Res> | ErrorResponse>(axiosConfig);
     const response = axiosResponse.data;
-    this.emit('response', response, requestSummary);
+    this.emit('private_response', response, requestSummary);
     this.checkError(response);
     return response.data as Res;
   }
@@ -152,8 +155,11 @@ export default class Api extends EventEmitter {
   }
 
   private async getPublic<Res>(path: string) {
+    const url = `${this.privateApiAxios.defaults.baseURL}${path}`;
+    this.emit('public_request', url);
     const axiosResponse = await this.publicApiAxios.get<SuccessResponse<Res> | ErrorResponse>(path);
     const response = axiosResponse.data;
+    this.emit('public_response', response, url);
     this.checkError(response);
     return response.data as Res;
   }

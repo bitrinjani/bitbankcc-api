@@ -12,7 +12,9 @@
     "jest": "jest --runInBand",
     "cov": "jest --coverage --runInBand"
   },
-  "keywords": ["typescript"],
+  "keywords": [
+    "typescript"
+  ],
   "repository": "https://github.com/bitrinjani/bitbankcc-api",
   "author": "bitrinjani <bitrinjani@gmail.com>",
   "license": "MIT",
@@ -26,6 +28,7 @@
     "@types/node": "^8.0.46",
     "coveralls": "^3.0.0",
     "jest": "^21.0.3",
+    "nock": "^9.1.6",
     "ts-jest": "^21.0.0",
     "ts-node": "3",
     "tslint-config-airbnb": "^5.5.0",
@@ -35,9 +38,23 @@
     "transform": {
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "testRegex": "/__tests__/.*\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+    "testRegex": "/__tests__/.*\\.test\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
     "mapCoverage": true,
-    "collectCoverageFrom": ["**/*.{ts,tsx}", "!**/__tests__/**", "!**/node_modules/**", "!**/*.d.ts", "!**/types.ts"]
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!**/__tests__/**",
+      "!**/node_modules/**",
+      "!**/*.d.ts",
+      "!**/types.ts",
+      "!**/ignore/**",
+      "!**/apiTypes.ts"
+    ]
   }
 }
