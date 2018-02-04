@@ -91,7 +91,7 @@ export interface AssetsResponse {
   }[];
 }
 
-export interface SendOrderResponse {
+export interface OrderModel {
   order_id: number;
   pair: string;
   side: string;
@@ -105,30 +105,102 @@ export interface SendOrderResponse {
   status: string;
 }
 
-export interface GetOrderResponse {
-  order_id: number;
+export interface SendOrderResponse extends OrderModel {}
+
+export interface GetOrderResponse extends OrderModel {}
+
+export interface CancelOrderResponse extends OrderModel {}
+
+export interface CancelOrdersRequest {
   pair: string;
-  side: string;
-  type: string;
-  start_amount: string;
-  remaining_amount: string;
-  executed_amount: string;
-  price: string;
-  average_price: string;
-  ordered_at: number;
-  status: string;
+  order_ids: number[];
 }
 
-export interface CancelOrderResponse {
-  order_id: number;
+export interface CancelOrdersResponse {
+  orders: OrderModel[];
+}
+
+export interface OrdersInfoRequest {
   pair: string;
+  order_ids: number[];
+}
+
+export interface OrdersInfoResponse {
+  orders: OrderModel[];
+}
+
+
+export interface ActiveOrdersRequest {
+  pair: string;
+  count: number;
+  from_id: number;
+  end_id: number;
+  since: number;
+  end: number;
+}
+
+export interface ActiveOrdersResponse {
+  orders: OrderModel[];
+}
+
+export interface TradeHistoryRequest {
+  pair: string;
+  count: number;
+  order_id: number;
+  since: number;
+  end: number;
+  order?: string;
+}
+
+export interface TradeModel {
+  trade_id: number;
+  pair: string;
+  order_id: number;
   side: string;
   type: string;
-  start_amount: string;
-  remaining_amount: string;
-  executed_amount: string;
+  amount: string;
   price: string;
-  average_price: string;
-  ordered_at: number;
+  maker_taker: string;
+  fee_amount_base: string;
+  fee_amount_quote: string;
+  executed_at: number;
+}
+
+export interface TradeHistoryResponse {
+  trades: TradeModel[];
+}
+
+export interface WithdrawalAccountRequest {
+  asset: string;
+}
+
+export interface Account {
+  uuid: string;
+  label: string;
+  address: string;
+}
+
+export interface WithdrawalAccountResponse {
+  accounts: Account[];
+}
+
+export interface RequestWithdrawalRequest{
+  asset: string;
+  uuid: string;
+  amount: string;
+  otp_token?: string;
+  sms_token?: string;
+}
+
+
+export interface RequestWithdrawalResponse {
+  uuid: string;
+  asset: string;
+  amount: number;
+  account_uuid: string;
+  fee: string;
   status: string;
+  label: string;
+  txid: string;
+  address: string;
 }

@@ -16,7 +16,19 @@ import {
   TransactionsResponse,
   CandlestickRequest,
   CandlestickResponse,
-  AssetsResponse
+  AssetsResponse,
+  CancelOrdersRequest,
+  CancelOrdersResponse,
+  OrdersInfoRequest,
+  OrdersInfoResponse,
+  ActiveOrdersRequest,
+  ActiveOrdersResponse,
+  TradeHistoryRequest,
+  TradeHistoryResponse,
+  WithdrawalAccountRequest,
+  WithdrawalAccountResponse,
+  RequestWithdrawalRequest,
+  RequestWithdrawalResponse
 } from './apiTypes';
 import * as util from './util';
 import * as crypto from 'crypto';
@@ -78,6 +90,36 @@ export default class Api extends EventEmitter {
   async cancelOrder(request: CancelOrderRequest): Promise<CancelOrderResponse> {
     const path = `/v1/user/spot/cancel_order`;
     return await this.post<CancelOrderRequest, CancelOrderResponse>(path, request);
+  }
+
+  async cancelOrders(request: CancelOrdersRequest): Promise<CancelOrdersResponse> {
+    const path = `/v1/user/spot/cancel_orders`;
+    return await this.post<CancelOrdersRequest, CancelOrdersResponse>(path, request);
+  }
+
+  async getOrdersInfo(request: OrdersInfoRequest): Promise<OrdersInfoResponse> {
+    const path = `/v1/user/spot/orders_info`;
+    return await this.post<OrdersInfoRequest, OrdersInfoResponse>(path, request);
+  }
+
+  async getActiveOrders(request: ActiveOrdersRequest): Promise<ActiveOrdersResponse> {
+    const path = `/v1/user/spot/active_orders`;
+    return await this.get<ActiveOrdersRequest, ActiveOrdersResponse>(path, request);
+  }
+
+  async getTradeHistory(request: TradeHistoryRequest): Promise<TradeHistoryResponse> {
+    const path = `/v1/user/spot/trade_history`;
+    return await this.get<TradeHistoryRequest, TradeHistoryResponse>(path, request);
+  }
+
+  async getWithdrawalAccount(request: WithdrawalAccountRequest): Promise<WithdrawalAccountResponse> {
+    const path = `/v1/user/withdrawal_account`;
+    return await this.get<WithdrawalAccountRequest, WithdrawalAccountResponse>(path, request);
+  }
+
+  async requestWithdrawal(request: RequestWithdrawalRequest): Promise<RequestWithdrawalResponse> {
+    const path = `/v1/user/request_withdrawal`;
+    return await this.post<RequestWithdrawalRequest, RequestWithdrawalResponse>(path, request);
   }
 
   private async privateApiCall<Req, Res>(method: 'GET' | 'POST', path: string, request: Req): Promise<Res> {
