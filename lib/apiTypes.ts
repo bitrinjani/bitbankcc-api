@@ -1,3 +1,5 @@
+import { Castable, cast, element } from '@bitr/castable';
+
 export interface DepthRequest {
   pair: string;
 }
@@ -47,77 +49,83 @@ export interface ErrorResponse {
   };
 }
 
-export interface DepthResponse {
-  asks: string[][];
-  bids: string[][];
-  timestamp: number;
+export class DepthResponse extends Castable {
+  @cast @element(Array, Number) asks: number[][];
+  @cast @element(Array, Number) bids: number[][];
+  @cast timestamp: number;
 }
 
-export interface TickerResponse {
-  sell: string;
-  buy: string;
-  high: string;
-  low: string;
-  last: string;
-  vol: string;
-  timestamp: number;
+export class TickerResponse extends Castable {
+  @cast sell: number;
+  @cast buy: number;
+  @cast high: number;
+  @cast low: number;
+  @cast last: number;
+  @cast vol: number;
+  @cast(Date) timestamp: Date;
 }
 
-export interface TransactionsResponse {
-  transactions: {
-    transaction_id: number;
-    side: string;
-    price: string;
-    amount: string;
-    executed_at: number;
-  }[];
+export class Transaction extends Castable {
+  @cast transaction_id: number;
+  @cast side: string;
+  @cast price: number;
+  @cast amount: number;
+  @cast(Date) executed_at: Date;
 }
 
-export interface CandlestickResponse {
-  candlestick: {
-    type: string;
-    ohlcv: string[][];
-  }[];
+export class TransactionsResponse extends Castable {
+  @cast @element(Transaction) transactions: Transaction[];
 }
 
-export interface AssetsResponse {
-  assets: {
-    asset: string;
-    amount_precision: number;
-    onhand_amount: string;
-    locked_amount: string;
-    free_amount: string;
-    withdrawal_fee: string;
-  }[];
+export class CandleStick extends Castable {
+  @cast type: string;
+  @cast @element(Array, Number) ohlcv: number[][];
 }
 
-export interface OrderModel {
-  order_id: number;
-  pair: string;
-  side: string;
-  type: string;
-  start_amount: string;
-  remaining_amount: string;
-  executed_amount: string;
-  price: string;
-  average_price: string;
-  ordered_at: number;
-  status: string;
+export class CandlestickResponse extends Castable {
+  @cast @element(CandleStick) candlestick: CandleStick[];
 }
 
-export interface SendOrderResponse extends OrderModel {}
+export class Asset extends Castable {
+  @cast asset: string;
+  @cast amount_precision: number;
+  @cast onhand_amount: number;
+  @cast locked_amount: number;
+  @cast free_amount: number;
+  @cast withdrawal_fee: number;
+}
 
-export interface GetOrderResponse extends OrderModel {}
+export class AssetsResponse extends Castable {
+  @cast @element(Asset) assets: Asset[];
+}
 
-export interface CancelOrderResponse extends OrderModel {}
+export class OrderModel extends Castable {
+  @cast order_id: number;
+  @cast pair: string;
+  @cast side: string;
+  @cast type: string;
+  @cast start_amount: number;
+  @cast remaining_amount: number;
+  @cast executed_amount: number;
+  @cast price: number;
+  @cast average_price: number;
+  @cast(Date) ordered_at: Date;
+  @cast status: string;
+}
+
+export class SendOrderResponse extends OrderModel {}
+
+export class GetOrderResponse extends OrderModel {}
+
+export class CancelOrderResponse extends OrderModel {}
 
 export interface CancelOrdersRequest {
   pair: string;
   order_ids: number[];
 }
 
-export interface CancelOrdersResponse {
-  orders: OrderModel[];
+export class CancelOrdersResponse extends Castable {
+  @cast @element(OrderModel) orders: OrderModel[];
 }
 
 export interface OrdersInfoRequest {
@@ -125,10 +133,9 @@ export interface OrdersInfoRequest {
   order_ids: number[];
 }
 
-export interface OrdersInfoResponse {
-  orders: OrderModel[];
+export class OrdersInfoResponse extends Castable {
+  @cast @element(OrderModel) orders: OrderModel[];
 }
-
 
 export interface ActiveOrdersRequest {
   pair: string;
@@ -139,8 +146,8 @@ export interface ActiveOrdersRequest {
   end: number;
 }
 
-export interface ActiveOrdersResponse {
-  orders: OrderModel[];
+export class ActiveOrdersResponse extends Castable {
+  @cast @element(OrderModel) orders: OrderModel[];
 }
 
 export interface TradeHistoryRequest {
@@ -152,22 +159,22 @@ export interface TradeHistoryRequest {
   order?: string;
 }
 
-export interface TradeModel {
-  trade_id: number;
-  pair: string;
-  order_id: number;
-  side: string;
-  type: string;
-  amount: string;
-  price: string;
-  maker_taker: string;
-  fee_amount_base: string;
-  fee_amount_quote: string;
-  executed_at: number;
+export class TradeModel extends Castable {
+  @cast trade_id: number;
+  @cast pair: string;
+  @cast order_id: number;
+  @cast side: string;
+  @cast type: string;
+  @cast amount: number;
+  @cast price: number;
+  @cast maker_taker: string;
+  @cast fee_amount_base: number;
+  @cast fee_amount_quote: number;
+  @cast(Date) executed_at: Date;
 }
 
-export interface TradeHistoryResponse {
-  trades: TradeModel[];
+export class TradeHistoryResponse extends Castable {
+  @cast @element(TradeModel) trades: TradeModel[];
 }
 
 export interface WithdrawalAccountRequest {

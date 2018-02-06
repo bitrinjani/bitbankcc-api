@@ -20,7 +20,8 @@ test('getDepth', async () => {
 test('getTicker', async () => {
   const api = new BitbankCcApi('key', 'secret');
   const res = await api.getTicker({ pair: 'btc_jpy' });
-  expect(res.sell).toBe("947696");
+  expect(res.sell).toBe(947696);
+  expect(res.timestamp).toEqual(new Date('2018-02-04T11:05:51.610Z'));
 })
 
 test('getTransactions', async () => {

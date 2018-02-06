@@ -54,7 +54,7 @@ export default class BitbankCcApi extends EventEmitter {
 
   async getTicker(request: TickerRequest): Promise<TickerResponse> {
     const path = `/${request.pair}/ticker`;
-    return await this.getPublic<TickerResponse>(path);
+    return new TickerResponse(await this.getPublic<TickerResponse>(path));
   }
 
   async getDepth(request: DepthRequest): Promise<DepthResponse> {
