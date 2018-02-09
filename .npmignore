@@ -4,4 +4,5 @@ coverage
 .travis.yml
 yarn.lock
 tsconfig.json
+tslint.json
 ignore
