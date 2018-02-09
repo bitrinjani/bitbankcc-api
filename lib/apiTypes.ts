@@ -181,14 +181,14 @@ export interface WithdrawalAccountRequest {
   asset: string;
 }
 
-export interface Account {
-  uuid: string;
-  label: string;
-  address: string;
+export class Account extends Castable {
+  @cast uuid: string;
+  @cast label: string;
+  @cast address: string;
 }
 
-export interface WithdrawalAccountResponse {
-  accounts: Account[];
+export class WithdrawalAccountResponse extends Castable {
+  @cast @element(Account) accounts: Account[];
 }
 
 export interface RequestWithdrawalRequest{
@@ -200,14 +200,14 @@ export interface RequestWithdrawalRequest{
 }
 
 
-export interface RequestWithdrawalResponse {
-  uuid: string;
-  asset: string;
-  amount: number;
-  account_uuid: string;
-  fee: string;
-  status: string;
-  label: string;
-  txid: string;
-  address: string;
+export class RequestWithdrawalResponse extends Castable {
+  @cast uuid: string;
+  @cast asset: string;
+  @cast amount: number;
+  @cast account_uuid: string;
+  @cast fee: string;
+  @cast status: string;
+  @cast label: string;
+  @cast txid: string;
+  @cast address: string;
 }
