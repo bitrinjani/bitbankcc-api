@@ -45,7 +45,7 @@ export interface SuccessResponse<T> {
 export interface ErrorResponse {
   success: 0;
   data: {
-    code: number;
+    code: number; 
   };
 }
 

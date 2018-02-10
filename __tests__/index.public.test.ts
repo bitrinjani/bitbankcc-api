@@ -14,7 +14,7 @@ test('getDepth', async () => {
   const api = new BitbankCcApi('key', 'secret');
   const res = await api.getDepth({ pair: 'btc_jpy' });
   expect(res.asks.length).toBe(3);
-  expect(res.asks[2][0]).toBe('943999');
+  expect(res.asks[2][0]).toBe(943999);
 })
 
 test('getTicker', async () => {
@@ -33,5 +33,5 @@ test('getTransactions', async () => {
 test('candle', async () => {
   const api = new BitbankCcApi('key', 'secret');
   const res = await api.getCandlestick({ pair: 'btc_jpy', candleType: '1hour', date: '20180101'});
-  expect(res.candlestick[0].ohlcv[0][0]).toBe("1710289");
+  expect(res.candlestick[0].ohlcv[0][0]).toBe(1710289);
 })

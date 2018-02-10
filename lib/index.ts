@@ -59,7 +59,7 @@ export default class BitbankCcApi extends EventEmitter {
 
   async getDepth(request: DepthRequest): Promise<DepthResponse> {
     const path = `/${request.pair}/depth`;
-    return await this.getPublic<DepthResponse>(path);
+    return new DepthResponse(await this.getPublic<DepthResponse>(path));
   }
 
   async getTransactions(request: TransactionsRequest): Promise<TransactionsResponse> {
@@ -67,62 +67,62 @@ export default class BitbankCcApi extends EventEmitter {
     if (request.date !== undefined) {
       path += `/${request.date}`;
     }
-    return await this.getPublic<TransactionsResponse>(path);
+    return new TransactionsResponse(await this.getPublic<TransactionsResponse>(path));
   }
 
   async getCandlestick(request: CandlestickRequest): Promise<CandlestickResponse> {
     const path = `/${request.pair}/candlestick/${request.candleType}/${request.date}`;
-    return await this.getPublic<CandlestickResponse>(path);
+    return new CandlestickResponse(await this.getPublic<CandlestickResponse>(path));
   }
 
   async getAssets(): Promise<AssetsResponse> {
     const path = `/v1/user/assets`;
-    return await this.get<{}, AssetsResponse>(path, {});
+    return new AssetsResponse(await this.get<{}, AssetsResponse>(path, {}));
   }
 
   async sendOrder(request: SendOrderRequest): Promise<SendOrderResponse> {
     const path = `/v1/user/spot/order`;
-    return await this.post<SendOrderRequest, SendOrderResponse>(path, request);
+    return new SendOrderResponse(await this.post<SendOrderRequest, SendOrderResponse>(path, request));
   }
 
   async getOrder(request: GetOrderRequest): Promise<GetOrderResponse> {
     const path = `/v1/user/spot/order`;
-    return await this.get<GetOrderRequest, GetOrderResponse>(path, request);
+    return new GetOrderResponse(await this.get<GetOrderRequest, GetOrderResponse>(path, request));
   }
 
   async cancelOrder(request: CancelOrderRequest): Promise<CancelOrderResponse> {
     const path = `/v1/user/spot/cancel_order`;
-    return await this.post<CancelOrderRequest, CancelOrderResponse>(path, request);
+    return new CancelOrderResponse(await this.post<CancelOrderRequest, CancelOrderResponse>(path, request));
   }
 
   async cancelOrders(request: CancelOrdersRequest): Promise<CancelOrdersResponse> {
     const path = `/v1/user/spot/cancel_orders`;
-    return await this.post<CancelOrdersRequest, CancelOrdersResponse>(path, request);
+    return new CancelOrdersResponse(await this.post<CancelOrdersRequest, CancelOrdersResponse>(path, request));
   }
 
   async getOrdersInfo(request: OrdersInfoRequest): Promise<OrdersInfoResponse> {
     const path = `/v1/user/spot/orders_info`;
-    return await this.post<OrdersInfoRequest, OrdersInfoResponse>(path, request);
+    return new OrdersInfoResponse(await this.post<OrdersInfoRequest, OrdersInfoResponse>(path, request));
   }
 
   async getActiveOrders(request: ActiveOrdersRequest): Promise<ActiveOrdersResponse> {
     const path = `/v1/user/spot/active_orders`;
-    return await this.get<ActiveOrdersRequest, ActiveOrdersResponse>(path, request);
+    return new ActiveOrdersResponse(await this.get<ActiveOrdersRequest, ActiveOrdersResponse>(path, request));
   }
 
   async getTradeHistory(request: TradeHistoryRequest): Promise<TradeHistoryResponse> {
     const path = `/v1/user/spot/trade_history`;
-    return await this.get<TradeHistoryRequest, TradeHistoryResponse>(path, request);
+    return new TradeHistoryResponse(await this.get<TradeHistoryRequest, TradeHistoryResponse>(path, request));
   }
 
   async getWithdrawalAccount(request: WithdrawalAccountRequest): Promise<WithdrawalAccountResponse> {
     const path = `/v1/user/withdrawal_account`;
-    return await this.get<WithdrawalAccountRequest, WithdrawalAccountResponse>(path, request);
+    return new WithdrawalAccountResponse(await this.get<WithdrawalAccountRequest, WithdrawalAccountResponse>(path, request));
   }
 
   async requestWithdrawal(request: RequestWithdrawalRequest): Promise<RequestWithdrawalResponse> {
     const path = `/v1/user/request_withdrawal`;
-    return await this.post<RequestWithdrawalRequest, RequestWithdrawalResponse>(path, request);
+    return new RequestWithdrawalResponse(await this.post<RequestWithdrawalRequest, RequestWithdrawalResponse>(path, request));
   }
 
   private async privateApiCall<Req, Res>(method: 'GET' | 'POST', path: string, request: Req): Promise<Res> {
