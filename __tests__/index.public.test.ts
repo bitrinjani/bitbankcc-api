@@ -1,4 +1,4 @@
-import BitbankCcApi from '../lib/index';
+import BitbankCcApi from '../lib';
 import { nocksetup } from './nocksetup.public';
 import * as nock from 'nock';
 

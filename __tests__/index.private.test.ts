@@ -1,6 +1,7 @@
-import BitbankCcApi from '../lib/index';
+import BitbankCcApi from '../lib';
 import { nocksetup } from './nocksetup.private';
 import * as nock from 'nock';
+import { GetOrderResponse } from '../lib';
 
 beforeAll(() => {
   nocksetup();
@@ -12,7 +13,7 @@ afterAll(() => {
 
 test('getOrder', async () => {
   const api = new BitbankCcApi('key', 'secret');
-  const res = await api.getOrder({ pair: 'btc_jpy', order_id: 12345 });
+  const res: GetOrderResponse = await api.getOrder({ pair: 'btc_jpy', order_id: 12345 });
   expect(res.order_id).toBe(12345);
   expect(res.price).toBe(500000);
 });
