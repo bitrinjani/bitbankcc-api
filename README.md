@@ -37,6 +37,8 @@ import BitbankCcApi from '@bitr/bitbankcc-api';
 })()();
 ```
 
+This library is used in R2 bitbankcc broker plugin. See [BrokerAdapterImpl.ts](https://github.com/bitrinjani/bitbankcc/blob/master/lib/BrokerAdapterImpl.ts) as a real world example.
+
 ------- 
 
 # Japanese
