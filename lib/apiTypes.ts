@@ -205,7 +205,7 @@ export class RequestWithdrawalResponse extends Castable {
   @cast asset: string;
   @cast amount: number;
   @cast account_uuid: string;
-  @cast fee: string;
+  @cast fee: number;
   @cast status: string;
   @cast label: string;
   @cast txid: string;
